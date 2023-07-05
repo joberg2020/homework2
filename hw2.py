@@ -223,29 +223,13 @@ class Interval:
 
     def __repr__(self):
         """
-        Returns a formal string representation of the Interval object.
-
-        This method is used by built-in functions and modules like repr(),
-        or when a string conversion of an object is required. It should
-        represent an unambiguous string that can be used to recreate the
-        object when fed to the eval() function.
+        Returns a string representation of the Interval object.
 
         Returns
         -------
         str
-            A string representation of the Interval in the form "Interval[lowest, highest]".
-        """
-        return f"Interval[{self._lowest}, {self._highest}]"
-
-    def __str__(self):
-        """
-        Returns a string representation of the Interval object.
-
-        Returns
-        str
             A string representation of the Interval in the form
             "[lowest, highest]".
-
         """
         return f"[{self._lowest}, {self._highest}]"
 
