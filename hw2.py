@@ -233,6 +233,47 @@ class Interval:
         """
         return f"[{self._lowest}, {self._highest}]"
 
+    def _validate_is_number(self, value):
+        """
+        Helper function to validate input for Interval.
+
+        Parameters
+        ----------
+        value : any
+            The value to validate.
+
+        Raises
+        ------
+        TypeError
+            If value is of other type than int or float.
+
+        Returns
+        -------
+        None.
+
+        """
+        if not isinstance(value, (int, float)):
+            raise TypeError('Only int and float are supported.')
+
+    def __contains__(self, value: Union[int, float]) -> bool:
+        """
+        Overloads the contains function for Ithe nterval class.
+
+        Parameters
+        ----------
+        value : Union[int, float]
+            Accepts int or float.
+
+        Returns
+        -------
+        bool
+            True if the number is captured by the current Interval, False
+            otherwise.
+
+        """
+        self._validate_is_number(value)
+        return value >= self._lowest and value <= self._highest
+
 
 a = Interval(23, 67)
 b = Interval(67, 120)
