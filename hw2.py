@@ -9,5 +9,9 @@ Created on Wed Jul  5 15:46:05 2023
 import numpy as np
 import matplotlib.pyplot as plt
 
-def task1():
-    pass
+
+class Interval:
+
+    def __init__(self, lowest: float, highest: float):
+        self._lowest = lowest
+        self._highest = highest
