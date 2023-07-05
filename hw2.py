@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class interval:
+class Interval:
 
     def __init__(self, lowest: float, highest: float):
         self._lowest = lowest
@@ -18,34 +18,72 @@ class interval:
         
     def __add__(self, other): # Add method
         # Check if other is numeric
-        if isinstance(other, (int, float, interval)) == False:
+        if isinstance(other, (int, float, Interval)) == False:
             raise TypeError("Can't add non-numeric")
         sh = self._highest
         sl = self._lowest
         if isinstance(other, (int, float)):
-            return interval(sl + other, sh + other)
-        elif isinstance(other, interval):
+            return Interval(sl + other, sh + other)
+        elif isinstance(other, Interval):
             oh = other._highest
             ol = other._lowest
-            return interval(sl + ol, sh + oh)
+            return Interval(sl + ol, sh + oh)
         
     def __radd__(self, other): # Funkar inte, varför?
         return self + other
     
     def __sub__(self, other): # Subtract method
         # Check if other is numeric
-        if isinstance(other, (int, float, interval)) == False:
+        if isinstance(other, (int, float, Interval)) == False:
             raise TypeError("Can't subtract non-numeric")
         sh = self._highest
         sl = self._lowest
         if isinstance(other, (int, float)):
-            return interval(sl - other, sh - other)
-        elif isinstance(other, interval):
+            return Interval(sl - other, sh - other)
+        elif isinstance(other, Interval):
             oh = other._highest
             ol = other._lowest
-            return interval(sl - oh, sh - ol)
+            return Interval(sl - oh, sh - ol)
     
     def __rsub__(self, other):
         return self - other
     
-    def __mul__
+    def __mul__(self, other):
+        # Check if other is numeric
+        if isinstance(other, (int, float, Interval)) == False:
+            raise TypeError("Can't subtract non-numeric")
+        sh = self._highest
+        sl = self._lowest
+        if isinstance(other, (int, float)):
+            return Interval(sl * other, sh * other)
+        elif isinstance(other, Interval):
+            oh = other._highest
+            ol = other._lowest
+            L = [sh * oh, sh * ol, sl * oh, sl * ol]
+            return Interval(min(L), max(L))
+    
+    def __rmul__(self, other):
+        return self * other
+    
+    def __truediv__(self, other):
+        # Check if other is numeric
+        if isinstance(other, (int, float, Interval)) == False:
+            raise TypeError("Can't subtract non-numeric")
+        sh = self._highest
+        sl = self._lowest
+        if isinstance(other, (int, float)):
+            return Interval(sl / other, sh / other)
+        elif isinstance(other, Interval):
+            oh = other._highest
+            ol = other._lowest
+            L = [sh / oh, sh / ol, sl / oh, sl / ol]
+            return Interval(min(L), max(L))
+        
+    def __rtruediv__(self, other):
+        return Interval(other / self._highest, other / self._lowest)
+    
+    def __repr__(self):
+        return f"[{self._lowest}, {self._highest}]"
+        
+a = Interval(23, 67)
+b = Interval(67, 120)
