@@ -9,3 +9,5 @@ Created on Wed Jul  5 15:46:05 2023
 import numpy as np
 import matplotlib.pyplot as plt
 
+def task1():
+    pass
