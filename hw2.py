@@ -324,6 +324,43 @@ class Interval:
         """
         return Interval(-self._highest, -self._lowest)
 
+    def __pow__(self, exponent: int):
+        """
+        
+
+        Parameters
+        ----------
+        exponent : int
+            The exponent.
+
+        Raises
+        ------
+        TypeError
+            If exponent is anything else than an integer, a
+            TypeError will be thrown.
+
+        Returns
+        -------
+        Interval
+            The resulting Interval.
+
+        """
+        if not isinstance(exponent, int):
+            raise TypeError("Only integers allowed as exponents.")
+        if exponent % 2 != 0:
+            return Interval(self._lowest**exponent, self._highest**exponent)
+        # exponent is even - three cases:
+        else:
+            if self._lowest >= 0:
+                return Interval(self._lowest**exponent,
+                                self._highest**exponent)
+            elif self._highest < 0:
+                return Interval(self._highest**exponent,
+                                self._lowest**exponent)
+            else:
+                return Interval(0, max(self._lowest**exponent,
+                                       self._highest**exponent))
+
 
 a = Interval(23, 67)
 b = Interval(67, 120)
