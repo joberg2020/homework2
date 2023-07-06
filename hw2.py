@@ -24,7 +24,8 @@ class Interval:
             The highest value of the interval.
     """
 
-    def __init__(self, lowest: Union[int, float], highest: Union[int, float]):
+    def __init__(self, lowest: Union[int, float],
+                 highest: Union[int, float] = None):
         """
         The constructor for the Interval class.
 
@@ -32,6 +33,8 @@ class Interval:
             lowest (int, float): The lowest value of the interval.
             highest (int, float): The highest value of the interval.
         """
+        if highest is None:
+            highest = lowest
         if not (isinstance(lowest, (int, float)) and
                 isinstance(highest, (int, float))):
             raise TypeError("Only int and float are supported.")
@@ -123,7 +126,23 @@ class Interval:
             return Interval(sl - oh, sh - ol)
 
     def __rsub__(self, other):
-        return self - other
+        """
+        Overloads the right subtraction method.
+
+        Parameters
+        ----------
+        other : (int, float, Interval):
+            The left side of the subtraction.
+
+        Returns
+        -------
+        Interval
+            The resulting interval.
+
+        """
+        if not isinstance(other, Interval):
+            other = Interval(other)
+        return other - self
 
     def __mul__(self, other):
         """
@@ -188,6 +207,8 @@ class Interval:
         TypeError
             If other is not of type int, float or Interval.
         ValueError
+            If result is an Interval that is infinitely large.
+        ZeroDivisionError
             If denominator is zero or has zero in its interval.
 
         Returns
@@ -289,6 +310,19 @@ class Interval:
         """
         self._validate_is_number(value)
         return value >= self._lowest and value <= self._highest
+
+    def __neg__(self):
+        """
+        Overloafs the negative operator for class Interval.
+        Returns a negative of the current interval.
+
+        Returns
+        -------
+        Interval
+            The negative counterpart of the current interval.
+
+        """
+        return Interval(-self._highest, -self._lowest)
 
 
 a = Interval(23, 67)
