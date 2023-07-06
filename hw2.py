@@ -9,7 +9,7 @@ Created on Wed Jul  5 15:46:05 2023
 
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Union
+from typing import Callable, Union
 
 
 class Interval:
@@ -326,8 +326,6 @@ class Interval:
 
     def __pow__(self, exponent: int):
         """
-        
-
         Parameters
         ----------
         exponent : int
@@ -361,6 +359,65 @@ class Interval:
                 return Interval(0, max(self._lowest**exponent,
                                        self._highest**exponent))
 
+    @staticmethod
+    def plot_bounds(polynomial: Callable, x_intervals: list, title: str):
+        """
+        Plot the lower and upper bounds of a given polynomial over a list of
+        intervals.
 
-a = Interval(23, 67)
-b = Interval(67, 120)
+        The function computes the polynomial for each interval in x_intervals
+        and then plots the lower and upper bounds of the results. The plot
+        is given a title specified by the user.
+
+        Parameters
+        ----------
+        polynomial : Callable
+            The polynomial function to be evaluated. This function should
+            accept an Interval object and return an Interval object
+            representing the lower and upper bounds of the polynomial
+            over that interval.
+.
+        x_intervals : list
+            A list of Interval objects representing the intervals over which
+            the polynomial should be evaluated.
+
+        title : str
+            The title of the plot.
+
+        Returns
+        -------
+        None.
+
+        """
+        try:
+            x_low = [elem._lowest for elem in x_intervals]
+
+            y_intervals = [polynomial(interv) for interv in x_intervals]
+            y_low = []
+            y_high = []
+            for idx, elem in enumerate(y_intervals):
+                y_low.append(elem._lowest)
+                y_high.append(elem._highest)
+            plt.plot(x_low, y_low)
+            plt.plot(x_low, y_high)
+            plt.title(title)
+            plt.xlabel("x")
+            plt.ylabel("p(I)")
+            plt.show()
+        except Exception as e:
+            print('Exception occured', e)
+
+
+# Code for evaluating task 10
+def p(iv):
+    return 3 * iv**3 - 2 * iv**2 - 5 * iv - 1
+
+
+def get_intervals():
+    xl = np.linspace(0., 1, 1000)
+    xu = np.linspace(0., 1, 1000) + 0.5
+    return [Interval(xl[(i)], xu[i]) for i in range(len(xl))]
+
+
+Interval.plot_bounds(p, get_intervals(), "p(I) = 3 * I³ - 2 * I² - 5 * I - 1;"
+                     " I = Interval(x, x + 0.5)")
