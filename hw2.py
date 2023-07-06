@@ -14,12 +14,13 @@ from typing import Union
 
 class Interval:
     """
-    The Interval class represents a range of real numbers defined by a lower and upper bound.
+    The Interval class represents a range of real numbers defined '
+    by a lower and upper bound.
 
     Attributes:
-        _lowest (float)
+        _lowest (int, float)
             The lowest value of the interval.
-        _highest (float)
+        _highest (int, float)
             The highest value of the interval.
     """
 
@@ -186,24 +187,39 @@ class Interval:
         ------
         TypeError
             If other is not of type int, float or Interval.
+        ValueError
+            If denominator is zero or has zero in its interval.
 
         Returns
         -------
         Interval
             A new Interval that represents the interval of the division.
         """
-        # Check if other is numeric
-        if not isinstance(other, (int, float, Interval)):
-            raise TypeError("Can't divide non-numeric")
+        result = None
         sh = self._highest
         sl = self._lowest
+        # Check if other is numeric then check div by zero
         if isinstance(other, (int, float)):
-            return Interval(sl / other, sh / other)
+            if other != 0:
+                result = Interval(sl / other, sh / other)
+            else:
+                raise ZeroDivisionError("Can't divide by zero.")
         elif isinstance(other, Interval):
-            oh = other._highest
-            ol = other._lowest
-            L = [sh / oh, sh / ol, sl / oh, sl / ol]
-            return Interval(min(L), max(L))
+            if 0 not in other:
+                oh = other._highest
+                ol = other._lowest
+                L = [sh / oh, sh / ol, sl / oh, sl / ol]
+                result = Interval(min(L), max(L))
+            else:
+                raise ZeroDivisionError("Can't divide by zero.")
+        else:
+            raise TypeError("Can't divide non-numeric")
+
+        # Check for infinity
+        if float('-inf') in result or float('inf') in result:
+            raise ValueError("The resulting interval is infinitely large.")
+
+        return result
 
     def __rtruediv__(self, other):
         """
