@@ -398,11 +398,13 @@ class Interval:
             for idx, elem in enumerate(y_intervals):
                 y_low.append(elem._lowest)
                 y_high.append(elem._highest)
-            plt.plot(x_low, y_low)
-            plt.plot(x_low, y_high)
+            plt.plot(x_low, y_high, color = "C2")
+            plt.plot(x_low, y_low, color = "C0")
             plt.title(title)
-            plt.xlabel("x")
-            plt.ylabel("p(I)")
+            plt.xlabel("$x$")
+            plt.ylabel("$p(I)$")
+            plt.xlim(0,1)
+            plt.ylim(-10, 4)
             plt.show()
         except Exception as e:
             print('Exception occured', e)
@@ -419,5 +421,5 @@ def get_intervals():
     return [Interval(xl[(i)], xu[i]) for i in range(len(xl))]
 
 
-Interval.plot_bounds(p, get_intervals(), "p(I) = 3 * I³ - 2 * I² - 5 * I - 1;"
-                     " I = Interval(x, x + 0.5)")
+Interval.plot_bounds(p, get_intervals(), "$p(I) = 3I³ - 2I² - 5I - 1$, "
+                     "$I$ = interval(x, x + 0,5)")
