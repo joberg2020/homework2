@@ -313,7 +313,7 @@ class Interval:
 
     def __neg__(self):
         """
-        Overloafs the negative operator for class Interval.
+        Overloads the negative operator for class Interval.
         Returns a negative of the current interval.
 
         Returns
@@ -395,15 +395,16 @@ class Interval:
             y_intervals = [polynomial(interv) for interv in x_intervals]
             y_low = []
             y_high = []
-            for idx, elem in enumerate(y_intervals):
+            for elem in y_intervals:
                 y_low.append(elem._lowest)
                 y_high.append(elem._highest)
-            plt.plot(x_low, y_high, color = "C2")
-            plt.plot(x_low, y_low, color = "C0")
+            plt.plot(x_low, y_high, color="C2")
+            plt.plot(x_low, y_low, color="C0")
+            plt.fill_between(x_low, y_low, y_high, color="lightgray")
             plt.title(title)
             plt.xlabel("$x$")
             plt.ylabel("$p(I)$")
-            plt.xlim(0,1)
+            plt.xlim(0, 1)
             plt.ylim(-10, 4)
             plt.show()
         except Exception as e:
